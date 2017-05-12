@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function move() {
+  if [ "$1" == "wallet" ]; then
+    cd ~/Desktop/Wallet/mpmobile-ios_$1
+  else
+    cd ~/Desktop/Wallet/mpmobile-ios_$1/Example
+  fi
+}
+
+function podAction() {
+    pod $1
+}
+
+echo "Escribi "update" o "install" espacio y el repo"
+read podAction repo
+move $repo
+podAction $podAction
+exec bash
