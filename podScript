@@ -1,19 +1,28 @@
 #!/bin/bash
 
 function move() {
-  if [ "$1" == "wallet" ]; then
-    cd ~/Desktop/Wallet/mpmobile-ios_$1
+  if [ "$1" == "mpmobile-ios_wallet" ]; then
+    #Podfile is in this folder
+    cd ../$1
   else
-    cd ~/Desktop/Wallet/mpmobile-ios_$1/Example
+    #Podfile is in Example folder
+    cd ../$1/Example
   fi
 }
 
 function podAction() {
+    #Executes the pod install or pod update
     pod $1
 }
 
-echo "Escribi "update" o "install" espacio y el repo"
+function fullRepoName() {
+  #read short repository name and return full name
+  local fullRepoName="mpmobile-ios_$1"
+  echo "$fullRepoName"
+}
+
+echo "Write "update" or "install" space and the repository you want"
 read podAction repo
-move $repo
+fullRepo=$(fullRepoName $repo)
+move $fullRepo
 podAction $podAction
-exec bash
