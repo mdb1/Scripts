@@ -1,0 +1,26 @@
+#!/bin/bash
+
+function changeEnvironment() {
+  if [ "$1" == "alpha" ]; then
+    echo "s/beta/$1/g"
+  elif [ "$1" == "beta" ]; then
+    echo "s/alpha/$1/g"
+  else
+    exit
+  fi
+}
+
+function changeFiles() {
+  read environment
+  newEnvironment=$(changeEnvironment $environment)
+  #Files to change
+  perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Generic/MPBPService.m
+  perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Entities/MPBPEntitiesService.m
+  #End of files to change
+  if [ "$environment" == "alpha" ] || [ "$environment" == "beta" ]; then
+    echo "Succesfully changed environment to $environment"
+  fi
+}
+
+echo "Type alpha or beta"
+changeFiles
