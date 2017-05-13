@@ -13,12 +13,14 @@ function changeEnvironment() {
 function changeFiles() {
   read environment
   newEnvironment=$(changeEnvironment $environment)
-  #Files to change
-  perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Generic/MPBPService.m
-  perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Entities/MPBPEntitiesService.m
-  #End of files to change
   if [ "$environment" == "alpha" ] || [ "$environment" == "beta" ]; then
+    #Files to change
+    perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Generic/MPBPService.m
+    perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Entities/MPBPEntitiesService.m
+    #End of files to change
     echo "Succesfully changed environment to $environment"
+  else
+    echo "Error"
   fi
 }
 
