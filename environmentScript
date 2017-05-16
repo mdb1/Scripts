@@ -2,27 +2,45 @@
 
 function changeEnvironment() {
   if [ "$1" == "alpha" ]; then
-    echo "s/beta/$1/g"
+    echo "s#/alpha#/$1#g"
   elif [ "$1" == "beta" ]; then
-    echo "s/alpha/$1/g"
+    echo "s#/alpha#/$1#g"
+  else
+    exit
+  fi
+}
+
+function currentEnvironment() {
+  if [ "$1" == "alpha" ]; then
+    echo "beta"
+  elif [ "$1" == "beta" ]; then
+    echo "alpha"
   else
     exit
   fi
 }
 
 function changeFiles() {
+  echo "Type the repo you want to modify"
+  read repo
+  echo "Type alpha or beta"
   read environment
+  currentEnvironment=$(currentEnvironment $environment)
   newEnvironment=$(changeEnvironment $environment)
+
+  cd ../mpmobile-ios_$repo/Pod/Classes
+
   if [ "$environment" == "alpha" ] || [ "$environment" == "beta" ]; then
-    #Files to change
-    perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Generic/MPBPService.m
-    perl -pi -e $newEnvironment ../mpmobile-ios_billpayments/Pod/Classes/components/Services/Entities/MPBPEntitiesService.m
-    #End of files to change
-    echo "Succesfully changed environment to $environment"
+    find . -type f -print0 | xargs -0 grep -l "/$currentEnvironment" | while read line; do
+      perl -pi -e $newEnvironment $line
+      echo "Succesfully changed $(basename $line) environment to $environment"
+    done
+    echo "================================="
+    echo "All the services of $repo are in $environment"
+    echo "================================="
   else
     echo "Error"
   fi
 }
 
-echo "Type alpha or beta"
 changeFiles
