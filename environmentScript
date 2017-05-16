@@ -2,7 +2,7 @@
 
 function changeEnvironment() {
   if [ "$1" == "alpha" ]; then
-    echo "s#/alpha#/$1#g"
+    echo "s#/beta#/$1#g"
   elif [ "$1" == "beta" ]; then
     echo "s#/alpha#/$1#g"
   else
