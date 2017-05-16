@@ -28,8 +28,12 @@ function changeFiles() {
   currentEnvironment=$(currentEnvironment $environment)
   newEnvironment=$(changeEnvironment $environment)
 
-  cd ../mpmobile-ios_$repo/Pod/Classes
-
+  if [ "$repo" != "wallet" ]; then
+    cd ../mpmobile-ios_$repo/Pod/Classes
+  else
+    cd ../mpmobile-ios_$repo/Pods
+  fi
+  
   if [ "$environment" == "alpha" ] || [ "$environment" == "beta" ]; then
     find . -type f -print0 | xargs -0 grep -l "/$currentEnvironment" | while read line; do
       perl -pi -e $newEnvironment $line
