@@ -26,3 +26,4 @@ read podAction repo
 fullRepo=$(fullRepoName $repo)
 move $fullRepo
 podAction $podAction
+
